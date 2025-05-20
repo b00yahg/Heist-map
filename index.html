@@ -40,12 +40,12 @@
             font-size: 16px;
         }
         
-        .map-container {
+        .map-area {
             position: relative;
-            height: 700px;
-            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=');
-            background-color: #f5e7d3;
+            height: 650px;
             border: 1px solid #5a3921;
+            background-color: #f5e7d3;
+            margin: 0 auto;
         }
         
         .room {
@@ -78,7 +78,7 @@
         .tooltip {
             display: none;
             position: absolute;
-            width: 200px;
+            width: 180px;
             background-color: rgba(255, 250, 240, 0.95);
             border: 1px solid #5a3921;
             border-radius: 4px;
@@ -100,11 +100,11 @@
         }
         
         .corridor-h {
-            height: 6px;
+            height: 4px;
         }
         
         .corridor-v {
-            width: 6px;
+            width: 4px;
         }
         
         .alt-path {
@@ -133,13 +133,6 @@
             z-index: 2;
         }
         
-        .surveillance-area {
-            position: absolute;
-            border: 1px dotted #cc0000;
-            background-color: rgba(204, 0, 0, 0.05);
-            z-index: 0;
-        }
-        
         .water-effect {
             position: absolute;
             border: none;
@@ -157,7 +150,7 @@
         .legend {
             position: absolute;
             top: 20px;
-            right: 20px;
+            right: 40px;
             width: 170px;
             padding: 10px;
             border: 2px solid #5a3921;
@@ -169,6 +162,7 @@
             font-size: 14px;
             text-align: center;
             margin-bottom: 10px;
+            color: #5a3921;
         }
         
         .legend-item {
@@ -187,7 +181,7 @@
         .notes {
             position: absolute;
             top: 20px;
-            left: 20px;
+            left: 40px;
             width: 190px;
             padding: 10px;
             border: 2px solid #5a3921;
@@ -199,11 +193,13 @@
             font-size: 14px;
             text-align: center;
             margin-bottom: 10px;
+            color: #5a3921;
         }
         
         .note {
             font-size: 11px;
             margin-bottom: 6px;
+            color: #5a3921;
         }
         
         .scale {
@@ -229,248 +225,10 @@
             <p>Reconnaissance Blueprint</p>
         </div>
         
-        <div class="map-container">
-            <!-- Corridors -->
-            <div class="corridor corridor-v" style="left: 500px; top: 200px; height: 150px;"></div> <!-- North -->
-            <div class="corridor corridor-v" style="left: 500px; top: 470px; height: 150px;"></div> <!-- South -->
-            <div class="corridor corridor-h" style="left: 560px; top: 400px; width: 210px;"></div> <!-- East -->
-            <div class="corridor corridor-h" style="left: 230px; top: 400px; width: 270px;"></div> <!-- West -->
-            
-            <!-- Alternative Paths -->
-            <div class="corridor corridor-v alt-path" style="left: 260px; top: 240px; height: 160px;"></div> <!-- Service Tunnel -->
-            <div class="corridor corridor-v alt-path" style="left: 815px; top: 250px; height: 230px;"></div> <!-- Hidden Passage -->
-            
-            <!-- Surveillance Areas -->
-            <div class="surveillance-area" style="left: 350px; top: 200px; width: 150px; height: 140px;"></div>
-            <div class="surveillance-area" style="left: 550px; top: 480px; width: 170px; height: 100px;"></div>
-            
-            <!-- Water Effects -->
-            <div class="water-effect" style="left: 780px; top: 515px; width: 80px; height: 10px;"></div> <!-- Red control -->
-            <div class="water-effect" style="left: 500px; top: 175px; width: 170px; height: 10px;"></div> <!-- Blue control -->
-            <div class="water-effect" style="left: 695px; top: 400px; width: 10px; height: 80px;"></div> <!-- Yellow control -->
-            
-            <!-- Guard Patrol -->
-            <div class="guard-patrol" style="left: 460px; top: 370px; width: 80px; height: 60px;"></div>
-            <div style="position: absolute; left: 500px; top: 340px; font-size: 10px; color: #cc6600; font-style: italic;">10-min patrol</div>
-            
-            <!-- Central Hub (Q1) -->
-            <div class="room central-hub" style="width: 120px; height: 120px; left: 440px; top: 340px;">
-                <div class="room-title">CENTRAL HUB</div>
-                <div class="room-detail">Multi-level with walkways</div>
-                <div class="water-control" style="top: 80px; left: 55px;"></div>
-                <div class="tooltip" style="left: 120px; top: 50px;">
-                    <h3 style="margin: 0 0 5px;">Central Hub</h3>
-                    <p style="margin: 0 0 8px;"><strong>Multi-level circular hub</strong> with raised stone walkways over flowing water channels.</p>
-                    <p style="margin: 0 0 8px;">Contains pressure valve for water system that must be operated simultaneously with main controls.</p>
-                    <p style="margin: 0 0 5px;"><strong>Security:</strong> Regular guard patrols every 10 minutes.</p>
-                    <p style="margin: 0;"><strong>Approach options:</strong> Move along walkways (visible), through water (concealed but poisonous), or from service tunnel.</p>
-                </div>
-            </div>
-            
-            <!-- Watch Post A (Q2a) -->
-            <div class="room" style="width: 90px; height: 90px; left: 215px; top: 250px;">
-                <div class="room-title">WATCH POST A</div>
-                <div class="room-detail">Scrying Pool</div>
-                <div class="eye-symbol" style="top: 60px; left: 15px;"></div>
-                <div class="tooltip" style="left: 90px; top: 40px;">
-                    <h3 style="margin: 0 0 5px;">Watch Post A</h3>
-                    <p style="margin: 0 0 8px;">Contains a scrying pool that monitors the <strong>northern rooms</strong> (Intelligence Center, Storage Room, Sleeping Area).</p>
-                    <p style="margin: 0 0 8px;"><strong>Security:</strong> Staffed by goblin who sleeps 30 minutes, patrols 15 minutes.</p>
-                    <p style="margin: 0;">Logbook contains guard schedules and security information.</p>
-                </div>
-            </div>
-            
-            <!-- Watch Post B (Q2b) -->
-            <div class="room" style="width: 90px; height: 90px; left: 380px; top: 480px;">
-                <div class="room-title">WATCH POST B</div>
-                <div class="room-detail">Scrying Pool</div>
-                <div class="eye-symbol" style="top: 60px; left: 15px;"></div>
-                <div class="tooltip" style="left: 90px; top: -70px;">
-                    <h3 style="margin: 0 0 5px;">Watch Post B</h3>
-                    <p style="margin: 0 0 8px;">Contains a scrying pool that monitors the <strong>eastern rooms</strong> (Armory, Interrogation Chamber, Flooded Passage).</p>
-                    <p style="margin: 0 0 8px;"><strong>Security:</strong> Staffed by goblin who sleeps 30 minutes, patrols 15 minutes.</p>
-                    <p style="margin: 0;">Logbook contains guard schedules and security information.</p>
-                </div>
-            </div>
-            
-            <!-- Storage Room (Q3) -->
-            <div class="room" style="width: 100px; height: 100px; left: 210px; top: 140px;">
-                <div class="room-title">STORAGE ROOM</div>
-                <div class="room-detail">Uniforms & Replica Eye</div>
-                <div class="tooltip" style="left: 100px; top: 30px;">
-                    <h3 style="margin: 0 0 5px;">Storage Room</h3>
-                    <p style="margin: 0 0 8px;">Contains spare uniforms for Xanathar Guild members.</p>
-                    <p style="margin: 0 0 8px;">A replica of the stone eye needed for the Portal Room is hidden among the clutter.</p>
-                    <p style="margin: 0;"><strong>Opportunity:</strong> Disguises available; replica eye works for one-time use.</p>
-                </div>
-            </div>
-            
-            <!-- Intelligence Center (Q4) -->
-            <div class="room" style="width: 100px; height: 100px; left: 350px; top: 100px;">
-                <div class="room-title">INTELLIGENCE</div>
-                <div class="room-title">CENTER</div>
-                <div class="room-detail">Records & Maps</div>
-                <div class="eye-symbol" style="top: 25px; left: 15px;"></div>
-                <div class="tooltip" style="left: 100px; top: 30px;">
-                    <h3 style="margin: 0 0 5px;">Intelligence Center</h3>
-                    <p style="margin: 0 0 8px;">Record room containing dossiers, patrol schedules, and surveillance maps.</p>
-                    <p style="margin: 0 0 8px;"><strong>Value:</strong> Information here provides advantage on stealth and perception checks throughout the hideout.</p>
-                    <p style="margin: 0;"><strong>Security:</strong> Under surveillance from Watch Post A.</p>
-                </div>
-            </div>
-            
-            <!-- Sleeping Area (Q5) -->
-            <div class="room" style="width: 100px; height: 100px; left: 550px; top: 100px;">
-                <div class="room-title">SLEEPING</div>
-                <div class="room-title">AREA</div>
-                <div class="room-detail">Guard Zemk + Key</div>
-                <div class="eye-symbol" style="top: 25px; left: 15px;"></div>
-                <div class="tooltip" style="left: 100px; top: 30px;">
-                    <h3 style="margin: 0 0 5px;">Sleeping Area</h3>
-                    <p style="margin: 0 0 8px;">Contains sleeping quarters for guards, including a duergar named Zemk.</p>
-                    <p style="margin: 0 0 8px;"><strong>Intel:</strong> Zemk keeps patrol schedules and a key that bypasses traps in corridor to Interrogation Chamber.</p>
-                    <p style="margin: 0;"><strong>Security:</strong> Under surveillance from Watch Post A.</p>
-                </div>
-            </div>
-            
-            <!-- Water Regulation (Q6) -->
-            <div class="room" style="width: 100px; height: 100px; left: 700px; top: 100px;">
-                <div class="room-title">WATER</div>
-                <div class="room-title">REGULATION</div>
-                <div class="room-detail">Main Controls</div>
-                <div class="water-control" style="top: 70px; left: 25px;"></div>
-                <div class="tooltip" style="left: -100px; top: 30px;">
-                    <h3 style="margin: 0 0 5px;">Water Regulation Chamber</h3>
-                    <p style="margin: 0 0 8px;"><strong>Key water controls:</strong></p>
-                    <p style="margin: 0 0 5px;">• <span style="color:#cc0000;">Red lever</span>: Controls water level in Flooded Passage</p>
-                    <p style="margin: 0 0 5px;">• <span style="color:#0066cc;">Blue valve</span>: Controls water flow between Hub and Sleeping Area</p>
-                    <p style="margin: 0 0 5px;">• <span style="color:#cc6600;">Yellow chain</span>: Emergency flush creating diversion</p>
-                    <p style="margin: 0 0 8px;"><strong>Warning:</strong> Requires coordination with pressure valve in Central Hub.</p>
-                    <p style="margin: 0;"><strong>Threat:</strong> Gray ooze inhabits cesspit below controls.</p>
-                </div>
-            </div>
-            
-            <!-- Interrogation Chamber (Q7) -->
-            <div class="room" style="width: 100px; height: 100px; left: 650px; top: 480px;">
-                <div class="room-title">INTERROGATION</div>
-                <div class="room-title">CHAMBER</div>
-                <div class="room-detail">Target Location!</div>
-                <div style="font-size: 8px; margin-top: 5px;">Boss leaves prisoner<br>unattended briefly</div>
-                <div class="eye-symbol" style="top: 25px; left: 15px;"></div>
-                <div class="tooltip" style="left: -100px; top: 20px;">
-                    <h3 style="margin: 0 0 5px;">Interrogation Chamber</h3>
-                    <p style="margin: 0 0 8px;"><strong>Primary target location</strong> where Floon is being held captive.</p>
-                    <p style="margin: 0 0 8px;">Boss (Grum'shar) follows specific interrogation routine, leaving prisoner unattended for 10 minutes every hour.</p>
-                    <p style="margin: 0 0 8px;">Control panel on southern wall can reset surveillance system.</p>
-                    <p style="margin: 0;"><strong>Security:</strong> Under surveillance from Watch Post B.</p>
-                </div>
-            </div>
-            
-            <!-- Flooded Passage (Q8) -->
-            <div class="room" style="width: 80px; height: 80px; left: 780px; top: 480px;">
-                <div class="room-title">FLOODED</div>
-                <div class="room-title">PASSAGE</div>
-                <div class="room-detail">Water Level Varies</div>
-                <div class="eye-symbol" style="top: 25px; left: 15px;"></div>
-                <div class="tooltip" style="left: -80px; top: 20px;">
-                    <h3 style="margin: 0 0 5px;">Flooded Passage</h3>
-                    <p style="margin: 0 0 8px;">Water level controlled by Red lever in Water Regulation Chamber:</p>
-                    <p style="margin: 0 0 5px;">• <strong>High</strong>: Hidden tunnel completely submerged (advantage on stealth)</p>
-                    <p style="margin: 0 0 5px;">• <strong>Medium</strong>: Tunnel partially visible</p>
-                    <p style="margin: 0 0 5px;">• <strong>Low</strong>: Tunnel easily visible</p>
-                    <p style="margin: 0 0 8px;">Contains a hidden tunnel to the Halfling Cellar.</p>
-                    <p style="margin: 0;"><strong>Security:</strong> Magical alarm trigger needs to be disarmed.</p>
-                </div>
-            </div>
-            
-            <!-- Halfling Cellar (Q9) -->
-            <div class="room" style="width: 80px; height: 80px; left: 780px; top: 250px;">
-                <div class="room-title">HALFLING</div>
-                <div class="room-title">CELLAR</div>
-                <div class="room-detail">Deliveries Dawn/Dusk</div>
-                <div class="tooltip" style="left: -80px; top: 20px;">
-                    <h3 style="margin: 0 0 5px;">Halfling Cellar</h3>
-                    <p style="margin: 0 0 8px;">Innocent halfling family's beer brewing cellar.</p>
-                    <p style="margin: 0 0 8px;">Regular deliveries occur at dawn and dusk, creating windows of opportunity with reduced security.</p>
-                    <p style="margin: 0;">Connected to hideout by hidden tunnel from Flooded Passage.</p>
-                </div>
-            </div>
-            
-            <!-- Armory (Q10) -->
-            <div class="room" style="width: 80px; height: 80px; left: 550px; top: 480px;">
-                <div class="room-title">ARMORY</div>
-                <div class="room-detail">Guard Uniforms</div>
-                <div class="eye-symbol" style="top: 50px; left: 15px;"></div>
-                <div class="tooltip" style="left: 80px; top: 20px;">
-                    <h3 style="margin: 0 0 5px;">Armory</h3>
-                    <p style="margin: 0 0 8px;">Contains weapon racks, complete guard uniforms, and shift rotation board.</p>
-                    <p style="margin: 0 0 8px;"><strong>Intel:</strong> Shift rotation board reveals guard change times (every 4 hours).</p>
-                    <p style="margin: 0;"><strong>Security:</strong> Under surveillance from Watch Post B.</p>
-                </div>
-            </div>
-            
-            <!-- Portal Room (Q11) -->
-            <div class="room" style="width: 80px; height: 80px; left: 550px; top: 580px;">
-                <div class="room-title">PORTAL</div>
-                <div class="room-title">ROOM</div>
-                <div class="room-detail">Pressure Floor</div>
-                <div class="tooltip" style="left: 80px; top: -50px;">
-                    <h3 style="margin: 0 0 5px;">Portal Room</h3>
-                    <p style="margin: 0 0 8px;">Contains a portal activated by stone eye (carried by Nihiloor or replica from Storage Room).</p>
-                    <p style="margin: 0 0 8px;"><strong>Security:</strong> Pressure-sensitive hallway with pattern that changes daily.</p>
-                    <p style="margin: 0;">Secondary control panel for surveillance system.</p>
-                </div>
-            </div>
-            
-            <!-- Hostel Cellar (Q12) -->
-            <div class="room" style="width: 100px; height: 100px; left: 220px; top: 580px;">
-                <div class="room-title">HOSTEL</div>
-                <div class="room-title">CELLAR</div>
-                <div class="room-detail">Wererat Guard</div>
-                <div class="room-detail">Cargo System</div>
-                <div class="tooltip" style="left: 100px; top: -50px;">
-                    <h3 style="margin: 0 0 5px;">Hostel Cellar</h3>
-                    <p style="margin: 0 0 8px;">Base for Shard Shunners, a gang of halfling wererats.</p>
-                    <p style="margin: 0 0 8px;">Enhanced with cargo delivery system - crates moved three times daily.</p>
-                    <p style="margin: 0 0 8px;"><strong>Opportunity:</strong> Wererat guard (Roscoe) can be convinced to create a diversion.</p>
-                    <p style="margin: 0;"><strong>Intel:</strong> Shard Shunners have rivalry with Xanathar Guild that can be exploited.</p>
-                </div>
-            </div>
-            
-            <!-- Legend -->
-            <div class="legend">
-                <div class="legend-title">LEGEND</div>
-                
-                <div class="legend-item">
-                    <div class="legend-symbol" style="border: 2px solid #cc0000; border-radius: 50%;"></div>
-                    <span>Eye Surveillance</span>
-                </div>
-                
-                <div class="legend-item">
-                    <div class="legend-symbol" style="border: 2px solid #0066cc;"></div>
-                    <span>Water Controls</span>
-                </div>
-                
-                <div class="legend-item">
-                    <div class="legend-symbol" style="border: 2px dashed #5a3921; height: 1px;"></div>
-                    <span>Alternative Path</span>
-                </div>
-                
-                <div class="legend-item">
-                    <div class="legend-symbol" style="background-color: rgba(0, 102, 0, 0.2);"></div>
-                    <span>Water Level Affected</span>
-                </div>
-                
-                <div class="legend-item">
-                    <div class="legend-symbol" style="border: 2px dashed #cc6600;"></div>
-                    <span>Guard Patrol</span>
-                </div>
-            </div>
-            
+        <div class="map-area">
             <!-- Notes -->
             <div class="notes">
                 <div class="notes-title">IMPORTANT NOTES</div>
-                
                 <div class="note">• Eyes = magical surveillance</div>
                 <div class="note">• Water controls require TWO operators (Hub + Regulation)</div>
                 <div class="note">• Goblins sleep 30min, patrol 15min</div>
@@ -482,6 +240,232 @@
                 <div class="note">• Guard changes every 4 hours</div>
             </div>
             
+            <!-- Legend -->
+            <div class="legend">
+                <div class="legend-title">LEGEND</div>
+                <div class="legend-item">
+                    <div class="legend-symbol" style="border: 2px solid #cc0000; border-radius: 50%;"></div>
+                    <span>Eye Surveillance</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-symbol" style="border: 2px solid #0066cc;"></div>
+                    <span>Water Controls</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-symbol" style="border: 2px dashed #5a3921; height: 1px;"></div>
+                    <span>Alternative Path</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-symbol" style="background-color: rgba(0, 102, 0, 0.2);"></div>
+                    <span>Water Level Affected</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-symbol" style="border: 2px dashed #cc6600;"></div>
+                    <span>Guard Patrol</span>
+                </div>
+            </div>
+
+            <!-- Main Corridor Structure -->
+            <!-- Center vertical line -->
+            <div class="corridor corridor-v" style="left: 498px; top: 180px; height: 410px;"></div>
+            
+            <!-- Central horizontal line -->
+            <div class="corridor corridor-h" style="left: 300px; top: 385px; width: 400px;"></div>
+            
+            <!-- Connect to Storage Room -->
+            <div class="corridor corridor-h" style="left: 300px; top: 300px; width: 70px;"></div>
+            <div class="corridor corridor-v" style="left: 300px; top: 300px; height: 85px;"></div>
+            
+            <!-- Connect to Intelligence Center -->
+            <div class="corridor corridor-h" style="left: 420px; top: 180px; width: 78px;"></div>
+            
+            <!-- Connect to Sleeping Area -->
+            <div class="corridor corridor-h" style="left: 498px; top: 300px; width: 70px;"></div>
+            <div class="corridor corridor-v" style="left: 568px; top: 180px; height: 120px;"></div>
+            
+            <!-- Connect to Water Regulation -->
+            <div class="corridor corridor-h" style="left: 568px; top: 180px; width: 170px;"></div>
+            
+            <!-- Connect to Watch Post A -->
+            <div class="corridor corridor-v" style="left: 345px; top: 385px; height: 100px;"></div>
+            
+            <!-- Connect to Watch Post B -->
+            <div class="corridor corridor-v" style="left: 655px; top: 385px; height: 80px;"></div>
+            
+            <!-- Connect to Armory -->
+            <div class="corridor corridor-h" style="left: 568px; top: 465px; width: 42px;"></div>
+            <div class="corridor corridor-v" style="left: 568px; top: 465px; height: 35px;"></div>
+            
+            <!-- Connect to Interrogation Chamber -->
+            <div class="corridor corridor-h" style="left: 610px; top: 500px; width: 88px;"></div>
+            <div class="corridor corridor-v" style="left: 698px; top: 385px; height: 115px;"></div>
+            
+            <!-- Connect to Flooded Passage -->
+            <div class="corridor corridor-h" style="left: 698px; top: 500px; width: 72px;"></div>
+            
+            <!-- Connect to Portal Room -->
+            <div class="corridor corridor-v" style="left: 498px; top: 590px; height: 60px;"></div>
+            
+            <!-- Connect to Hostel Cellar -->
+            <div class="corridor corridor-h" style="left: 230px; top: 465px; width: 115px;"></div>
+            <div class="corridor corridor-v" style="left: 230px; top: 465px; height: 135px;"></div>
+            
+            <!-- Alternative Paths -->
+            <!-- Service Tunnel -->
+            <div class="corridor corridor-v alt-path" style="left: 272px; top: 300px; height: 165px;"></div>
+            
+            <!-- Hidden Passage to Trash Compactor -->
+            <div class="corridor corridor-v alt-path" style="left: 770px; top: 300px; height: 200px;"></div>
+            
+            <!-- Water Effects -->
+            <!-- Red control - affects flooded passage -->
+            <div class="water-effect" style="left: 770px; top: 495px; width: 70px; height: 10px;"></div>
+            
+            <!-- Blue control - affects corridor Hub to Sleeping Area -->
+            <div class="water-effect" style="left: 498px; top: 295px; width: 70px; height: 10px;"></div>
+            
+            <!-- Yellow control - emergency flush -->
+            <div class="water-effect" style="left: 693px; top: 385px; width: 10px; height: 115px;"></div>
+            
+            <!-- Guard Patrol area in Central Hub -->
+            <div class="guard-patrol" style="left: 463px; top: 355px; width: 70px; height: 60px;"></div>
+            
+            <!-- Rooms -->
+            <!-- Central Hub (Q1) -->
+            <div class="room central-hub" style="width: 100px; height: 100px; left: 448px; top: 335px;">
+                <div class="room-title">CENTRAL HUB</div>
+                <div class="room-detail">Multi-level with walkways</div>
+                <div class="water-control" style="top: 60px; left: 45px;"></div>
+                <div class="tooltip" style="left: 100px; top: 20px;">
+                    Contains pressure valve that requires coordination with Water Regulation room.
+                </div>
+            </div>
+            
+            <!-- Storage Room (Q3) -->
+            <div class="room" style="width: 90px; height: 90px; left: 230px; top: 210px;">
+                <div class="room-title">STORAGE ROOM</div>
+                <div class="room-detail">Uniforms & Control Tables</div>
+                <div class="tooltip" style="left: 90px; top: 20px;">
+                    Various uniforms and Control Tables that can control different systems.
+                </div>
+            </div>
+            
+            <!-- Watch Post A (Q2a) -->
+            <div class="room" style="width: 90px; height: 90px; left: 300px; top: 485px;">
+                <div class="room-title">WATCH POST A</div>
+                <div class="room-detail">Scrying Pool</div>
+                <div class="eye-symbol" style="top: 60px; left: 15px;"></div>
+                <div class="tooltip" style="left: 90px; top: -60px;">
+                    Monitors northern passageways. Manned by two guards that switch every three hours. 
+                    Note: Goblins are personally unionized and dedicated to clocking out even if there's 
+                    no one to replace them.
+                </div>
+            </div>
+            
+            <!-- Intelligence Center (Q4) -->
+            <div class="room" style="width: 90px; height: 90px; left: 330px; top: 90px;">
+                <div class="room-title">INTELLIGENCE</div>
+                <div class="room-title">CENTER</div>
+                <div class="room-detail">Guild Records</div>
+                <div class="eye-symbol" style="top: 25px; left: 15px;"></div>
+                <div class="tooltip" style="left: 90px; top: 20px;">
+                    Record room containing various records of the guild.
+                </div>
+            </div>
+            
+            <!-- Sleeping Area (Q5) -->
+            <div class="room" style="width: 90px; height: 90px; left: 568px; top: 90px;">
+                <div class="room-title">SLEEPING</div>
+                <div class="room-title">AREA</div>
+                <div class="room-detail">Guard Quarters</div>
+                <div class="eye-symbol" style="top: 25px; left: 15px;"></div>
+                <div class="tooltip" style="left: -90px; top: 20px;">
+                    Contains sleeping quarters for guild members.
+                </div>
+            </div>
+            
+            <!-- Water Regulation (Q6) -->
+            <div class="room" style="width: 90px; height: 90px; left: 738px; top: 90px;">
+                <div class="room-title">WATER</div>
+                <div class="room-title">REGULATION</div>
+                <div class="room-detail">Main Controls</div>
+                <div class="water-control" style="top: 60px; left: 15px;"></div>
+                <div class="tooltip" style="left: -90px; top: 20px;">
+                    Contains the main water control valves for the complex.
+                </div>
+            </div>
+            
+            <!-- Interrogation Chamber (Q7) -->
+            <div class="room" style="width: 90px; height: 90px; left: 698px; top: 500px;">
+                <div class="room-title">INTERROGATION</div>
+                <div class="room-title">CHAMBER</div>
+                <div class="room-detail">Likely where Floon is</div>
+                <div class="eye-symbol" style="top: 25px; left: 15px;"></div>
+                <div class="tooltip" style="left: -90px; top: 0px;">
+                    Most likely where Floon is being held.
+                </div>
+            </div>
+            
+            <!-- Flooded Passage (Q8) -->
+            <div class="room" style="width: 70px; height: 70px; left: 770px; top: 465px;">
+                <div class="room-title">FLOODED</div>
+                <div class="room-title">PASSAGE</div>
+                <div class="room-detail">Water Level Varies</div>
+                <div class="eye-symbol" style="top: 25px; left: 15px;"></div>
+                <div class="tooltip" style="left: -70px; top: 0px;">
+                    Water level controlled by red valve in Water Regulation room.
+                </div>
+            </div>
+            
+            <!-- Trash Compactor (former Halfling Cellar) (Q9) -->
+            <div class="room" style="width: 70px; height: 70px; left: 770px; top: 230px;">
+                <div class="room-title">TRASH</div>
+                <div class="room-title">COMPACTOR</div>
+                <div class="room-detail">Exit only</div>
+                <div class="tooltip" style="left: -70px; top: 0px;">
+                    Proper exit but unable to enter. Trash can exit, but no way to reverse the process.
+                </div>
+            </div>
+            
+            <!-- Armory (Q10) -->
+            <div class="room" style="width: 70px; height: 70px; left: 498px; top: 465px;">
+                <div class="room-title">ARMORY</div>
+                <div class="eye-symbol" style="top: 40px; left: 15px;"></div>
+                <div class="tooltip" style="left: 70px; top: 0px;">
+                    Storage for weapons and armor.
+                </div>
+            </div>
+            
+            <!-- Portal Room (Q11) -->
+            <div class="room" style="width: 70px; height: 70px; left: 463px; top: 590px;">
+                <div class="room-title">PORTAL</div>
+                <div class="room-title">ROOM</div>
+                <div class="room-detail">Pressure Floor</div>
+                <div class="tooltip" style="left: 70px; top: -20px;">
+                    Contains a magical portal activated by a special stone eye.
+                </div>
+            </div>
+            
+            <!-- Hostel Cellar (Q12) -->
+            <div class="room" style="width: 90px; height: 90px; left: 140px; top: 510px;">
+                <div class="room-title">HOSTEL</div>
+                <div class="room-title">CELLAR</div>
+                <div class="room-detail">Wererat Deliveries</div>
+                <div class="tooltip" style="left: 90px; top: -20px;">
+                    Wererats conduct deliveries at dawn and dusk of large wine barrels.
+                </div>
+            </div>
+            
+            <!-- Watch Post B (Q2b) -->
+            <div class="room" style="width: 90px; height: 90px; left: 610px; top: 385px;">
+                <div class="room-title">WATCH POST B</div>
+                <div class="room-detail">Scrying Pool</div>
+                <div class="eye-symbol" style="top: 60px; left: 15px;"></div>
+                <div class="tooltip" style="left: -90px; top: 20px;">
+                    Contains a scrying pool that monitors eastern areas.
+                </div>
+            </div>
+            
             <!-- Scale -->
             <div class="scale">
                 <div class="scale-bar"></div>
@@ -489,5 +473,26 @@
             </div>
         </div>
     </div>
+    
+    <script>
+        // Make tooltips position themselves better based on window location
+        document.querySelectorAll('.room').forEach(room => {
+            room.addEventListener('mouseenter', function() {
+                const tooltip = this.querySelector('.tooltip');
+                const roomRect = this.getBoundingClientRect();
+                const tooltipRect = tooltip.getBoundingClientRect();
+                
+                // Check if tooltip would go off the right edge of the screen
+                if (roomRect.right + tooltipRect.width > window.innerWidth) {
+                    tooltip.style.left = '-' + (tooltipRect.width + 10) + 'px';
+                }
+                
+                // Check if tooltip would go off the top of the screen
+                if (roomRect.top - tooltipRect.height < 0) {
+                    tooltip.style.top = roomRect.height + 'px';
+                }
+            });
+        });
+    </script>
 </body>
 </html>
