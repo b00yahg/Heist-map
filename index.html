@@ -1,577 +1,480 @@
-import React, { useState } from 'react';
-
-const HeistMap = () => {
-  const [hoveredRoom, setHoveredRoom] = useState(null);
-  
-  const containerStyle = {
-    fontFamily: 'Georgia, serif',
-    maxWidth: '900px',
-    margin: '0 auto',
-    padding: '20px',
-    backgroundColor: '#f5e7d3',
-    border: '2px solid #5a3921',
-    borderRadius: '10px',
-    color: '#5a3921',
-    position: 'relative',
-    boxShadow: '0 0 15px rgba(0,0,0,0.1)'
-  };
-  
-  const titleStyle = {
-    textAlign: 'center',
-    marginBottom: '20px',
-  };
-  
-  const mapAreaStyle = {
-    position: 'relative',
-    height: '650px',
-    border: '1px solid #5a3921',
-    backgroundColor: '#f5e7d3',
-    overflow: 'hidden',
-    borderRadius: '5px'
-  };
-  
-  const roomStyle = {
-    position: 'absolute',
-    border: '2px solid #5a3921',
-    backgroundColor: '#f5e7d3',
-    padding: '8px',
-    textAlign: 'center',
-    transition: 'box-shadow 0.2s, background-color 0.2s',
-    cursor: 'pointer',
-    zIndex: 3
-  };
-  
-  const tooltipStyle = {
-    position: 'absolute',
-    backgroundColor: 'rgba(245, 231, 211, 0.95)',
-    border: '1px solid #5a3921',
-    borderRadius: '5px',
-    padding: '10px',
-    boxShadow: '0 3px 6px rgba(0,0,0,0.16)',
-    fontSize: '12px',
-    maxWidth: '180px',
-    zIndex: 100,
-    pointerEvents: 'none',
-    transition: 'opacity 0.2s',
-    opacity: 0
-  };
-  
-  const pathStyle = {
-    position: 'absolute',
-    backgroundColor: '#5a3921',
-    zIndex: 1
-  };
-  
-  const rooms = [
-    {
-      id: 'central-hub',
-      name: 'CENTRAL HUB',
-      detail: 'Multi-level with walkways',
-      tooltip: 'Contains pressure valve that requires coordination with Water Regulation room.',
-      isCircle: true,
-      left: 400,
-      top: 300,
-      width: 120,
-      height: 120,
-      hasWaterControl: true,
-      waterControlPos: { top: 70, left: 60 }
-    },
-    {
-      id: 'storage-room',
-      name: 'STORAGE ROOM',
-      detail: 'Uniforms & Control Tables',
-      tooltip: 'Various uniforms and Control Tables that can control different systems.',
-      left: 180,
-      top: 150,
-      width: 100,
-      height: 100
-    },
-    {
-      id: 'intelligence-center',
-      name: 'INTELLIGENCE CENTER',
-      detail: 'Guild Records',
-      tooltip: 'Record room containing various records of the guild.',
-      left: 320,
-      top: 100,
-      width: 110,
-      height: 100,
-      hasEye: true,
-      eyePos: { top: 20, left: 20 }
-    },
-    {
-      id: 'sleeping-area',
-      name: 'SLEEPING AREA',
-      detail: 'Guard Quarters',
-      tooltip: 'Contains sleeping quarters for guild members.',
-      left: 500,
-      top: 100,
-      width: 100,
-      height: 100,
-      hasEye: true,
-      eyePos: { top: 20, left: 20 }
-    },
-    {
-      id: 'water-regulation',
-      name: 'WATER REGULATION',
-      detail: 'Main Controls',
-      tooltip: 'Contains the main water control valves for the complex.',
-      left: 670,
-      top: 100,
-      width: 100,
-      height: 100,
-      hasWaterControl: true,
-      waterControlPos: { top: 70, left: 20 }
-    },
-    {
-      id: 'watch-post-a',
-      name: 'WATCH POST A',
-      detail: 'Scrying Pool',
-      tooltip: 'Monitors northern passageways. Manned by two guards that switch every three hours. Note: Goblins are personally unionized and dedicated to clocking out even if there\'s no one to replace them.',
-      left: 240,
-      top: 400,
-      width: 100,
-      height: 100,
-      hasEye: true,
-      eyePos: { top: 70, left: 20 }
-    },
-    {
-      id: 'watch-post-b',
-      name: 'WATCH POST B',
-      detail: 'Scrying Pool',
-      tooltip: 'Contains a scrying pool that monitors eastern areas.',
-      left: 560,
-      top: 350,
-      width: 100,
-      height: 100,
-      hasEye: true,
-      eyePos: { top: 70, left: 20 }
-    },
-    {
-      id: 'armory',
-      name: 'ARMORY',
-      detail: '',
-      tooltip: 'Storage for weapons and armor.',
-      left: 450,
-      top: 450,
-      width: 90,
-      height: 90,
-      hasEye: true,
-      eyePos: { top: 40, left: 20 }
-    },
-    {
-      id: 'interrogation-chamber',
-      name: 'INTERROGATION CHAMBER',
-      detail: 'Likely where Floon is',
-      tooltip: 'Most likely where Floon is being held.',
-      left: 650,
-      top: 480,
-      width: 110,
-      height: 100,
-      hasEye: true,
-      eyePos: { top: 20, left: 20 }
-    },
-    {
-      id: 'flooded-passage',
-      name: 'FLOODED PASSAGE',
-      detail: 'Water Level Varies',
-      tooltip: 'Water level controlled by red valve in Water Regulation room.',
-      left: 740,
-      top: 400,
-      width: 90,
-      height: 90,
-      hasEye: true,
-      eyePos: { top: 20, left: 20 }
-    },
-    {
-      id: 'trash-compactor',
-      name: 'TRASH COMPACTOR',
-      detail: 'Exit only',
-      tooltip: 'Proper exit but unable to enter. Trash can exit, but no way to reverse the process.',
-      left: 720,
-      top: 220,
-      width: 90,
-      height: 90
-    },
-    {
-      id: 'portal-room',
-      name: 'PORTAL ROOM',
-      detail: 'Pressure Floor',
-      tooltip: 'Contains a magical portal activated by a special stone eye.',
-      left: 400,
-      top: 550,
-      width: 90,
-      height: 90
-    },
-    {
-      id: 'hostel-cellar',
-      name: 'HOSTEL CELLAR',
-      detail: 'Wererat Deliveries',
-      tooltip: 'Wererats conduct deliveries at dawn and dusk of large wine barrels.',
-      left: 120,
-      top: 500,
-      width: 100,
-      height: 100
-    }
-  ];
-
-  // Paths for corridors
-  const paths = [
-    // Main vertical corridor
-    { isHorizontal: false, left: 460, top: 170, height: 380 },
-    
-    // Main horizontal corridor
-    { isHorizontal: true, left: 240, top: 360, width: 500 },
-    
-    // Connect to Storage Room
-    { isHorizontal: true, left: 240, top: 200, width: 40 },
-    { isHorizontal: false, left: 240, top: 200, height: 160 },
-    
-    // Connect to Intelligence Center
-    { isHorizontal: true, left: 375, top: 170, width: 85 },
-    
-    // Connect to Sleeping Area
-    { isHorizontal: true, left: 460, top: 150, width: 40 },
-    
-    // Connect to Water Regulation
-    { isHorizontal: true, left: 600, top: 150, width: 70 },
-    
-    // Connect to Watch Post A
-    { isHorizontal: false, left: 290, top: 360, height: 40 },
-    
-    // Connect to Watch Post B
-    { isHorizontal: false, left: 610, top: 350, height: 10 },
-    
-    // Connect to Armory
-    { isHorizontal: false, left: 490, top: 450, height: 0 },
-    
-    // Connect to Interrogation Chamber
-    { isHorizontal: true, left: 650, top: 480, width: 0 },
-    { isHorizontal: false, left: 650, top: 360, height: 120 },
-    
-    // Connect to Flooded Passage
-    { isHorizontal: true, left: 650, top: 445, width: 90 },
-    
-    // Connect to Portal Room
-    { isHorizontal: false, left: 445, top: 550, height: 0 },
-    
-    // Connect to Hostel Cellar
-    { isHorizontal: true, left: 170, top: 500, width: 70 },
-    { isHorizontal: false, left: 170, top: 360, height: 140 }
-  ];
-
-  // Alternative paths (dashed)
-  const altPaths = [
-    // Service Tunnel
-    { isHorizontal: false, left: 200, top: 200, height: 300 },
-    
-    // Hidden Passage to Trash Compactor
-    { isHorizontal: false, left: 765, top: 310, height: 90 }
-  ];
-
-  // Water effects
-  const waterEffects = [
-    // Red control - affects flooded passage
-    { left: 740, top: 460, width: 90, height: 8 },
-    
-    // Blue control - affects corridor Hub to Sleeping Area
-    { left: 460, top: 145, width: 40, height: 8 },
-    
-    // Yellow control - emergency flush
-    { left: 646, top: 360, width: 8, height: 120 }
-  ];
-  
-  // Guard patrol area
-  const guardPatrol = { left: 430, top: 320, width: 60, height: 60 };
-  
-  // Notes and Legend components
-  const Notes = () => (
-    <div style={{
-      position: 'absolute',
-      top: '20px',
-      left: '20px',
-      width: '180px',
-      padding: '10px',
-      border: '2px solid #5a3921',
-      backgroundColor: '#f5e7d3',
-      borderRadius: '5px',
-      zIndex: 10
-    }}>
-      <div style={{ fontWeight: 'bold', fontSize: '14px', textAlign: 'center', marginBottom: '10px' }}>
-        IMPORTANT NOTES
-      </div>
-      <div style={{ fontSize: '11px', marginBottom: '5px' }}>• Eyes = magical surveillance</div>
-      <div style={{ fontSize: '11px', marginBottom: '5px' }}>• Water controls require TWO operators (Hub + Regulation)</div>
-      <div style={{ fontSize: '11px', marginBottom: '5px' }}>• Goblins sleep 30min, patrol 15min</div>
-      <div style={{ fontSize: '11px', marginBottom: '5px' }}>• Prisoner unattended 10min/hour</div>
-      <div style={{ fontSize: '11px', marginBottom: '5px' }}>• Red control - affects flooded passage water level</div>
-      <div style={{ fontSize: '11px', marginBottom: '5px' }}>• Blue control - affects corridor between Hub and Sleeping Area</div>
-      <div style={{ fontSize: '11px', marginBottom: '5px' }}>• Yellow control - emergency flush, creates diversion</div>
-      <div style={{ fontSize: '11px', marginBottom: '5px' }}>• Maintenance workers at dawn and dusk</div>
-      <div style={{ fontSize: '11px', marginBottom: '5px' }}>• Guard changes every 4 hours</div>
-    </div>
-  );
-  
-  const Legend = () => (
-    <div style={{
-      position: 'absolute',
-      top: '20px',
-      right: '20px',
-      width: '160px',
-      padding: '10px',
-      border: '2px solid #5a3921',
-      backgroundColor: '#f5e7d3',
-      borderRadius: '5px',
-      zIndex: 10
-    }}>
-      <div style={{ fontWeight: 'bold', fontSize: '14px', textAlign: 'center', marginBottom: '10px' }}>
-        LEGEND
-      </div>
-      
-      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
-        <div style={{ 
-          width: '14px', 
-          height: '14px', 
-          borderRadius: '50%', 
-          border: '2px solid #cc0000', 
-          marginRight: '8px' 
-        }}></div>
-        <span style={{ fontSize: '11px' }}>Eye Surveillance</span>
-      </div>
-      
-      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
-        <div style={{ 
-          width: '14px', 
-          height: '14px', 
-          border: '2px solid #0066cc', 
-          marginRight: '8px' 
-        }}></div>
-        <span style={{ fontSize: '11px' }}>Water Controls</span>
-      </div>
-      
-      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
-        <div style={{ 
-          width: '20px', 
-          height: '0px', 
-          border: '2px dashed #5a3921',
-          marginRight: '8px' 
-        }}></div>
-        <span style={{ fontSize: '11px' }}>Alternative Path</span>
-      </div>
-      
-      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}>
-        <div style={{ 
-          width: '20px', 
-          height: '8px', 
-          backgroundColor: 'rgba(0, 102, 0, 0.3)',
-          marginRight: '8px' 
-        }}></div>
-        <span style={{ fontSize: '11px' }}>Water Level Affected</span>
-      </div>
-      
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        <div style={{ 
-          width: '20px', 
-          height: '14px', 
-          border: '2px dashed #cc6600',
-          marginRight: '8px' 
-        }}></div>
-        <span style={{ fontSize: '11px' }}>Guard Patrol</span>
-      </div>
-    </div>
-  );
-  
-  const Scale = () => (
-    <div style={{
-      position: 'absolute',
-      bottom: '15px',
-      left: '50%',
-      transform: 'translateX(-50%)',
-      textAlign: 'center'
-    }}>
-      <div style={{
-        width: '100px',
-        height: '2px',
-        backgroundColor: '#5a3921',
-        margin: '0 auto 5px'
-      }}></div>
-      <div style={{ fontSize: '12px' }}>1 square = 5 feet</div>
-    </div>
-  );
-  
-  return (
-    <div style={containerStyle}>
-      <div style={titleStyle}>
-        <h1 style={{ margin: '0 0 5px 0', fontSize: '28px' }}>XANATHAR GUILD HIDEOUT</h1>
-        <p style={{ margin: 0, fontStyle: 'italic', fontSize: '16px' }}>Reconnaissance Blueprint</p>
-      </div>
-      
-      <div style={mapAreaStyle}>
-        <Notes />
-        <Legend />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xanathar Guild Hideout - Heist Map</title>
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            background-color: #f0e6d2;
+            margin: 0;
+            padding: 20px;
+            color: #5a3921;
+        }
         
-        {/* Main Corridors */}
-        {paths.map((path, index) => (
-          <div 
-            key={`path-${index}`} 
-            style={{
-              ...pathStyle,
-              left: `${path.left}px`,
-              top: `${path.top}px`,
-              width: path.isHorizontal ? `${path.width}px` : '4px',
-              height: path.isHorizontal ? '4px' : `${path.height}px`,
-            }}
-          />
-        ))}
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #f5e7d3;
+            border: 2px solid #5a3921;
+            border-radius: 10px;
+            padding: 20px;
+            position: relative;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
         
-        {/* Alternative Paths */}
-        {altPaths.map((path, index) => (
-          <div 
-            key={`alt-path-${index}`} 
-            style={{
-              position: 'absolute',
-              left: `${path.left}px`,
-              top: `${path.top}px`,
-              width: path.isHorizontal ? `${path.width}px` : '2px',
-              height: path.isHorizontal ? '2px' : `${path.height}px`,
-              borderLeft: path.isHorizontal ? 'none' : '2px dashed #5a3921',
-              borderTop: path.isHorizontal ? '2px dashed #5a3921' : 'none',
-              zIndex: 1
-            }}
-          />
-        ))}
+        .map-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
         
-        {/* Water Effects */}
-        {waterEffects.map((effect, index) => (
-          <div 
-            key={`water-effect-${index}`} 
-            style={{
-              position: 'absolute',
-              left: `${effect.left}px`,
-              top: `${effect.top}px`,
-              width: `${effect.width}px`,
-              height: `${effect.height}px`,
-              backgroundColor: 'rgba(0, 102, 0, 0.3)',
-              zIndex: 1
-            }}
-          />
-        ))}
+        .map-title h1 {
+            margin: 0 0 5px 0;
+            color: #5a3921;
+            font-size: 28px;
+        }
         
-        {/* Guard Patrol */}
-        <div 
-          style={{
-            position: 'absolute',
-            left: `${guardPatrol.left}px`,
-            top: `${guardPatrol.top}px`,
-            width: `${guardPatrol.width}px`,
-            height: `${guardPatrol.height}px`,
-            border: '2px dashed #cc6600',
-            zIndex: 1
-          }}
-        />
-        <div 
-          style={{
-            position: 'absolute',
-            left: `${guardPatrol.left + guardPatrol.width/2 - 30}px`,
-            top: `${guardPatrol.top - 20}px`,
-            fontSize: '10px',
-            color: '#cc6600',
-            fontStyle: 'italic'
-          }}
-        >
-          10-min patrol
+        .map-title p {
+            margin: 5px 0 0;
+            font-style: italic;
+            font-size: 16px;
+        }
+        
+        .map-area {
+            position: relative;
+            height: 650px;
+            border: 1px solid #5a3921;
+            background-color: #f5e7d3;
+            margin: 0 auto;
+            border-radius: 5px;
+        }
+        
+        .room {
+            position: absolute;
+            border: 2px solid #5a3921;
+            background-color: #f5e7d3;
+            text-align: center;
+            padding: 8px;
+            cursor: pointer;
+            z-index: 3;
+        }
+        
+        .room:hover {
+            background-color: rgba(245, 231, 211, 0.7);
+            box-shadow: 0 0 8px rgba(90, 57, 33, 0.5);
+        }
+        
+        .room-title {
+            font-weight: bold;
+            margin-bottom: 3px;
+            line-height: 1.2;
+        }
+        
+        .room-detail {
+            font-style: italic;
+            font-size: 11px;
+            line-height: 1.2;
+        }
+        
+        .tooltip {
+            display: none;
+            position: absolute;
+            width: 180px;
+            background-color: rgba(255, 250, 240, 0.95);
+            border: 1px solid #5a3921;
+            border-radius: 4px;
+            padding: 10px;
+            font-size: 12px;
+            z-index: 100;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .room:hover .tooltip {
+            display: block;
+        }
+        
+        .corridor {
+            position: absolute;
+            background-color: #5a3921;
+            z-index: 1;
+        }
+        
+        .corridor-h {
+            height: 4px;
+        }
+        
+        .corridor-v {
+            width: 4px;
+        }
+        
+        .alt-path {
+            background-color: transparent;
+            border: 2px dashed #5a3921;
+        }
+        
+        .central-hub {
+            border-radius: 50%;
+        }
+        
+        .eye-symbol {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 2px solid #cc0000;
+            z-index: 2;
+        }
+        
+        .water-control {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border: 2px solid #0066cc;
+            z-index: 2;
+        }
+        
+        .water-effect {
+            position: absolute;
+            border: none;
+            background-color: rgba(0, 102, 0, 0.3);
+            z-index: 0;
+        }
+        
+        .guard-patrol {
+            position: absolute;
+            border: 2px dashed #cc6600;
+            background-color: transparent;
+            z-index: 0;
+        }
+        
+        .notes {
+            position: absolute;
+            top: 20px;
+            left: 40px;
+            width: 190px;
+            padding: 10px;
+            border: 2px solid #5a3921;
+            background-color: rgba(245, 231, 211, 0.9);
+            border-radius: 5px;
+            z-index: 10;
+        }
+        
+        .notes-title {
+            font-weight: bold;
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 10px;
+            color: #5a3921;
+        }
+        
+        .note {
+            font-size: 11px;
+            margin-bottom: 6px;
+            color: #5a3921;
+        }
+        
+        .legend {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            width: 170px;
+            padding: 10px;
+            border: 2px solid #5a3921;
+            background-color: rgba(245, 231, 211, 0.9);
+            border-radius: 5px;
+            z-index: 10;
+        }
+        
+        .legend-title {
+            font-weight: bold;
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 10px;
+            color: #5a3921;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 11px;
+        }
+        
+        .legend-symbol {
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+        }
+        
+        .scale {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+        }
+        
+        .scale-bar {
+            width: 100px;
+            height: 2px;
+            background-color: #5a3921;
+            margin: 0 auto 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="map-title">
+            <h1>XANATHAR GUILD HIDEOUT</h1>
+            <p>Reconnaissance Blueprint</p>
         </div>
         
-        {/* Rooms */}
-        {rooms.map(room => {
-          const isHovered = hoveredRoom === room.id;
-          const baseStyle = {
-            ...roomStyle,
-            left: `${room.left}px`,
-            top: `${room.top}px`,
-            width: `${room.width}px`,
-            height: `${room.height}px`,
-            boxShadow: isHovered ? '0 0 8px rgba(90, 57, 33, 0.5)' : 'none',
-            backgroundColor: isHovered ? 'rgba(245, 231, 211, 0.7)' : '#f5e7d3',
-            borderRadius: room.isCircle ? '50%' : '0'
-          };
-          
-          // Calculate tooltip position
-          let tooltipLeft = room.width + 10;
-          let tooltipTop = 20;
-          
-          // Adjust tooltip position for right side rooms
-          if (room.left > 500) {
-            tooltipLeft = -190;
-          }
-          
-          // Adjust tooltip position for bottom rooms
-          if (room.top > 400) {
-            tooltipTop = -60;
-          }
-          
-          return (
-            <div 
-              key={room.id}
-              style={baseStyle}
-              onMouseEnter={() => setHoveredRoom(room.id)}
-              onMouseLeave={() => setHoveredRoom(null)}
-            >
-              <div style={{ 
-                fontWeight: 'bold', 
-                fontSize: room.name.length > 15 ? '12px' : '14px', 
-                marginBottom: '3px',
-                lineHeight: 1.2
-              }}>
-                {room.name}
-              </div>
-              {room.detail && (
-                <div style={{ fontStyle: 'italic', fontSize: '11px', lineHeight: 1.2 }}>
-                  {room.detail}
-                </div>
-              )}
-              
-              {/* Eye Symbol */}
-              {room.hasEye && (
-                <div style={{
-                  position: 'absolute',
-                  width: '12px',
-                  height: '12px',
-                  borderRadius: '50%',
-                  border: '2px solid #cc0000',
-                  top: `${room.eyePos.top}px`,
-                  left: `${room.eyePos.left}px`
-                }} />
-              )}
-              
-              {/* Water Control */}
-              {room.hasWaterControl && (
-                <div style={{
-                  position: 'absolute',
-                  width: '12px',
-                  height: '12px',
-                  border: '2px solid #0066cc',
-                  top: `${room.waterControlPos.top}px`,
-                  left: `${room.waterControlPos.left}px`
-                }} />
-              )}
-              
-              {/* Tooltip */}
-              <div style={{
-                ...tooltipStyle,
-                left: `${tooltipLeft}px`,
-                top: `${tooltipTop}px`,
-                opacity: isHovered ? 1 : 0
-              }}>
-                {room.tooltip}
-              </div>
+        <div class="map-area">
+            <!-- Notes -->
+            <div class="notes">
+                <div class="notes-title">IMPORTANT NOTES</div>
+                <div class="note">• Eyes = magical surveillance</div>
+                <div class="note">• Water controls require TWO operators (Hub + Regulation)</div>
+                <div class="note">• Goblins sleep 30min, patrol 15min</div>
+                <div class="note">• Prisoner unattended 10min/hour</div>
+                <div class="note">• Red control - affects flooded passage water level</div>
+                <div class="note">• Blue control - affects corridor between Hub and Sleeping Area</div>
+                <div class="note">• Yellow control - emergency flush, creates diversion</div>
+                <div class="note">• Maintenance workers at dawn and dusk</div>
+                <div class="note">• Guard changes every 4 hours</div>
             </div>
-          );
-        })}
-        
-        <Scale />
-      </div>
-    </div>
-  );
-};
+            
+            <!-- Legend -->
+            <div class="legend">
+                <div class="legend-title">LEGEND</div>
+                <div class="legend-item">
+                    <div class="legend-symbol" style="border: 2px solid #cc0000; border-radius: 50%;"></div>
+                    <span>Eye Surveillance</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-symbol" style="border: 2px solid #0066cc;"></div>
+                    <span>Water Controls</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-symbol" style="border: 2px dashed #5a3921; height: 1px;"></div>
+                    <span>Alternative Path</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-symbol" style="background-color: rgba(0, 102, 0, 0.3);"></div>
+                    <span>Water Level Affected</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-symbol" style="border: 2px dashed #cc6600;"></div>
+                    <span>Guard Patrol</span>
+                </div>
+            </div>
 
-export default HeistMap;
+            <!-- Main Corridors -->
+            <!-- Center vertical line -->
+            <div class="corridor corridor-v" style="left: 498px; top: 180px; height: 410px;"></div>
+            
+            <!-- Central horizontal line -->
+            <div class="corridor corridor-h" style="left: 300px; top: 385px; width: 400px;"></div>
+            
+            <!-- Connect to Storage Room -->
+            <div class="corridor corridor-h" style="left: 280px; top: 200px; width: 40px;"></div>
+            <div class="corridor corridor-v" style="left: 280px; top: 200px; height: 185px;"></div>
+            
+            <!-- Connect to Intelligence Center -->
+            <div class="corridor corridor-h" style="left: 375px; top: 170px; width: 123px;"></div>
+            
+            <!-- Connect to Sleeping Area -->
+            <div class="corridor corridor-h" style="left: 498px; top: 150px; width: 52px;"></div>
+            
+            <!-- Connect to Water Regulation -->
+            <div class="corridor corridor-h" style="left: 600px; top: 150px; width: 72px;"></div>
+            
+            <!-- Connect to Watch Post A -->
+            <div class="corridor corridor-v" style="left: 310px; top: 385px; height: 45px;"></div>
+            
+            <!-- Connect to Watch Post B -->
+            <div class="corridor corridor-v" style="left: 610px; top: 350px; height: 35px;"></div>
+            
+            <!-- Connect to Armory -->
+            <div class="corridor corridor-h" style="left: 498px; top: 450px; width: 0;"></div>
+            
+            <!-- Connect to Interrogation Chamber -->
+            <div class="corridor corridor-h" style="left: 650px; top: 520px; width: 0;"></div>
+            <div class="corridor corridor-v" style="left: 650px; top: 385px; height: 135px;"></div>
+            
+            <!-- Connect to Flooded Passage -->
+            <div class="corridor corridor-h" style="left: 650px; top: 445px; width: 90px;"></div>
+            
+            <!-- Connect to Portal Room -->
+            <div class="corridor corridor-v" style="left: 445px; top: 550px; height: 0;"></div>
+            
+            <!-- Connect to Hostel Cellar -->
+            <div class="corridor corridor-h" style="left: 170px; top: 500px; width: 130px;"></div>
+            <div class="corridor corridor-v" style="left: 170px; top: 385px; height: 115px;"></div>
+            
+            <!-- Alternative Paths (dashed) -->
+            <!-- Service Tunnel -->
+            <div style="position: absolute; left: 230px; top: 200px; width: 0; height: 300px; border-left: 2px dashed #5a3921; z-index: 1;"></div>
+            
+            <!-- Hidden Passage to Trash Compactor -->
+            <div style="position: absolute; left: 765px; top: 310px; width: 0; height: 135px; border-left: 2px dashed #5a3921; z-index: 1;"></div>
+            
+            <!-- Water Effects -->
+            <!-- Red control - affects flooded passage -->
+            <div class="water-effect" style="left: 740px; top: 460px; width: 90px; height: 8px;"></div>
+            
+            <!-- Blue control - affects corridor Hub to Sleeping Area -->
+            <div class="water-effect" style="left: 498px; top: 145px; width: 52px; height: 8px;"></div>
+            
+            <!-- Yellow control - emergency flush -->
+            <div class="water-effect" style="left: 646px; top: 385px; width: 8px; height: 135px;"></div>
+            
+            <!-- Guard patrol area -->
+            <div class="guard-patrol" style="left: 450px; top: 335px; width: 100px; height: 50px;"></div>
+            <div style="position: absolute; left: 470px; top: 315px; font-size: 10px; color: #cc6600; font-style: italic;">10-min patrol</div>
+            
+            <!-- Central Hub (Q1) -->
+            <div class="room central-hub" style="width: 100px; height: 100px; left: 448px; top: 335px;">
+                <div class="room-title">CENTRAL HUB</div>
+                <div class="room-detail">Multi-level with walkways</div>
+                <div class="water-control" style="top: 60px; left: 45px;"></div>
+                <div class="tooltip" style="left: 100px; top: 20px;">
+                    Contains pressure valve that requires coordination with Water Regulation room.
+                </div>
+            </div>
+            
+            <!-- Storage Room (Q3) -->
+            <div class="room" style="width: 90px; height: 90px; left: 190px; top: 180px;">
+                <div class="room-title">STORAGE ROOM</div>
+                <div class="room-detail">Uniforms & Control Tables</div>
+                <div class="tooltip" style="left: 90px; top: 20px;">
+                    Various uniforms and Control Tables that can control different systems.
+                </div>
+            </div>
+            
+            <!-- Watch Post A (Q2a) -->
+            <div class="room" style="width: 90px; height: 90px; left: 260px; top: 430px;">
+                <div class="room-title">WATCH POST A</div>
+                <div class="room-detail">Scrying Pool</div>
+                <div class="eye-symbol" style="top: 60px; left: 15px;"></div>
+                <div class="tooltip" style="left: 90px; top: -60px;">
+                    Monitors northern passageways. Manned by two guards that switch every three hours. 
+                    Note: Goblins are personally unionized and dedicated to clocking out even if there's 
+                    no one to replace them.
+                </div>
+            </div>
+            
+            <!-- Intelligence Center (Q4) -->
+            <div class="room" style="width: 90px; height: 90px; left: 330px; top: 90px;">
+                <div class="room-title">INTELLIGENCE</div>
+                <div class="room-title">CENTER</div>
+                <div class="room-detail">Guild Records</div>
+                <div class="eye-symbol" style="top: 25px; left: 15px;"></div>
+                <div class="tooltip" style="left: 90px; top: 20px;">
+                    Record room containing various records of the guild.
+                </div>
+            </div>
+            
+            <!-- Sleeping Area (Q5) -->
+            <div class="room" style="width: 90px; height: 90px; left: 550px; top: 90px;">
+                <div class="room-title">SLEEPING</div>
+                <div class="room-title">AREA</div>
+                <div class="room-detail">Guard Quarters</div>
+                <div class="eye-symbol" style="top: 25px; left: 15px;"></div>
+                <div class="tooltip" style="left: -90px; top: 20px;">
+                    Contains sleeping quarters for guild members.
+                </div>
+            </div>
+            
+            <!-- Water Regulation (Q6) -->
+            <div class="room" style="width: 90px; height: 90px; left: 670px; top: 90px;">
+                <div class="room-title">WATER</div>
+                <div class="room-title">REGULATION</div>
+                <div class="room-detail">Main Controls</div>
+                <div class="water-control" style="top: 60px; left: 15px;"></div>
+                <div class="tooltip" style="left: -90px; top: 20px;">
+                    Contains the main water control valves for the complex.
+                </div>
+            </div>
+            
+            <!-- Interrogation Chamber (Q7) -->
+            <div class="room" style="width: 90px; height: 90px; left: 650px; top: 520px;">
+                <div class="room-title">INTERROGATION</div>
+                <div class="room-title">CHAMBER</div>
+                <div class="room-detail">Likely where Floon is</div>
+                <div class="eye-symbol" style="top: 25px; left: 15px;"></div>
+                <div class="tooltip" style="left: -90px; top: 0px;">
+                    Most likely where Floon is being held.
+                </div>
+            </div>
+            
+            <!-- Flooded Passage (Q8) -->
+            <div class="room" style="width: 70px; height: 70px; left: 730px; top: 430px;">
+                <div class="room-title">FLOODED</div>
+                <div class="room-title">PASSAGE</div>
+                <div class="room-detail">Water Level Varies</div>
+                <div class="eye-symbol" style="top: 25px; left: 15px;"></div>
+                <div class="tooltip" style="left: -70px; top: 0px;">
+                    Water level controlled by red valve in Water Regulation room.
+                </div>
+            </div>
+            
+            <!-- Trash Compactor (former Halfling Cellar) (Q9) -->
+            <div class="room" style="width: 70px; height: 70px; left: 730px; top: 240px;">
+                <div class="room-title">TRASH</div>
+                <div class="room-title">COMPACTOR</div>
+                <div class="room-detail">Exit only</div>
+                <div class="tooltip" style="left: -70px; top: 0px;">
+                    Proper exit but unable to enter. Trash can exit, but no way to reverse the process.
+                </div>
+            </div>
+            
+            <!-- Armory (Q10) -->
+            <div class="room" style="width: 70px; height: 70px; left: 498px; top: 450px;">
+                <div class="room-title">ARMORY</div>
+                <div class="eye-symbol" style="top: 30px; left: 15px;"></div>
+                <div class="tooltip" style="left: 70px; top: 0px;">
+                    Storage for weapons and armor.
+                </div>
+            </div>
+            
+            <!-- Portal Room (Q11) -->
+            <div class="room" style="width: 70px; height: 70px; left: 463px; top: 550px;">
+                <div class="room-title">PORTAL</div>
+                <div class="room-title">ROOM</div>
+                <div class="room-detail">Pressure Floor</div>
+                <div class="tooltip" style="left: 70px; top: -20px;">
+                    Contains a magical portal activated by a special stone eye.
+                </div>
+            </div>
+            
+            <!-- Hostel Cellar (Q12) -->
+            <div class="room" style="width: 90px; height: 90px; left: 80px; top: 460px;">
+                <div class="room-title">HOSTEL</div>
+                <div class="room-title">CELLAR</div>
+                <div class="room-detail">Wererat Deliveries</div>
+                <div class="tooltip" style="left: 90px; top: -20px;">
+                    Wererats conduct deliveries at dawn and dusk of large wine barrels.
+                </div>
+            </div>
+            
+            <!-- Watch Post B (Q2b) -->
+            <div class="room" style="width: 90px; height: 90px; left: 565px; top: 350px;">
+                <div class="room-title">WATCH POST B</div>
+                <div class="room-detail">Scrying Pool</div>
+                <div class="eye-symbol" style="top: 60px; left: 15px;"></div>
+                <div class="tooltip" style="left: -90px; top: 20px;">
+                    Contains a scrying pool that monitors eastern areas.
+                </div>
+            </div>
+            
+            <!-- Scale -->
+            <div class="scale">
+                <div class="scale-bar"></div>
+                <div>1 square = 5 feet</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
